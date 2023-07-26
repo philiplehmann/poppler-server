@@ -1,4 +1,4 @@
-FROM node:18-bullseye
+FROM node:20-bullseye
 
 COPY index.ts package.json yarn.lock tsconfig.json ./
 
