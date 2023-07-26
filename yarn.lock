@@ -154,15 +154,15 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.17.60.tgz#35f3d6213daed95da7f0f73e75bcc6980e90597b"
   integrity sha512-F0KIgDJfy2nA3zMLmWGKxcH2ZVEtCZXHHdOQs2gSaQ27+lNeEfGxzkIw90aXswATX7AZ33tahPbzy6KAfUreVw==
 
-"@types/node@^16.4.13":
-  version "16.18.15"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-16.18.15.tgz#260fbad5f819744c63467b429b3ca00894f3c72c"
-  integrity sha512-a5RBe4vw4bFITL6351US4glblsc0m7JKfm9RpSl9f/rSAXmZmulIEzk7fvpWFr14iJCvKxV7sQUqI0bwee0iVw==
-
 "@types/node@^18.15.11":
   version "18.17.1"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-18.17.1.tgz#84c32903bf3a09f7878c391d31ff08f6fe7d8335"
   integrity sha512-xlR1jahfizdplZYRU59JlUx9uzF1ARa8jbhM11ccpCJya8kvos5jwdm2ZAgxSCwOl0fq21svP18EVwPBXMQudw==
+
+"@types/node@^20.2.4":
+  version "20.4.5"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.4.5.tgz#9dc0a5cb1ccce4f7a731660935ab70b9c00a5d69"
+  integrity sha512-rt40Nk13II9JwQBdeYqmbn2Q6IVTA5uPhvSO+JVqdXw/6/4glI6oR9ezty/A9Hg5u7JH4OmYmuQ+XvjKm0Datg==
 
 "@types/qs@*":
   version "6.9.7"
@@ -867,13 +867,13 @@ node-ts-dev@^1.0.0:
     ts-node "^10.9.1"
     typescript "^4.7.4"
 
-node-ts@^5.1.2:
-  version "5.1.2"
-  resolved "https://registry.yarnpkg.com/node-ts/-/node-ts-5.1.2.tgz#4e1fa51e87506e042c7ea2b1e465684a79532274"
-  integrity sha512-ihRzS31ZbknFzXFkF4j9R3HJV1cRPTjyYzeRaEFyXv5DhWKGD+QNTJ+My5WiOc0kozEPjwRBsKh+g92hPyTNnQ==
+node-ts@^6.0.0:
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/node-ts/-/node-ts-6.0.1.tgz#624dcf6ae9794dab837197ea4b2ebb26a5dad3ad"
+  integrity sha512-nxFz4tJYv9Yu6u4e3B1rmfh45Zmge7rD/MlTA5V98+Q5eFsqzCWTWDYvbrNEPGtnzhkqNLk4E2r3C6VSfNoZNQ==
   dependencies:
     "@rauschma/stringio" "^1.4.0"
-    "@types/node" "^16.4.13"
+    "@types/node" "^20.2.4"
 
 nodemailer@^6.7.8:
   version "6.9.1"
