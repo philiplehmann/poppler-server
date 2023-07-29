@@ -1,2 +1,7 @@
 node_modules
 yarn-error.log
+
+.yarn/cache
+.yarn/install-state.gz
+
+index.js

@@ -1,10 +1,11 @@
-FROM node:20-bullseye
+FROM node:lts-bookworm
 
 COPY index.ts package.json yarn.lock tsconfig.json ./
 
 RUN apt-get update; \
-    apt-get install poppler-utils -y; \
+    apt-get install poppler-utils=22.12.0-2 -y; \
     yarn install; \
-    yarn tsc
+    yarn tsc; \
+    rm -rf .yarn index.ts
 
 CMD ["node", "index.js"]
