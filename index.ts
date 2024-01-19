@@ -6,7 +6,7 @@ import path from 'path';
 
 const PORT = process.env.PORT || '5000';
 
-const app = express();
+export const app = express();
 
 app.post('/pdf-to-text', async (req, res) => {
   const pdfToText = spawn('pdftotext', ['-', '-']);
