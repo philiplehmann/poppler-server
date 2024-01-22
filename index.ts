@@ -1,49 +1,32 @@
-import { spawn } from 'child_process';
-import express from 'express';
-import fs from 'fs';
-import { v4 as uuidv4 } from 'uuid';
-import path from 'path';
+import { spawn } from 'node:child_process';
+import { finished } from 'node:stream/promises';
+import http from 'node:http';
 
 const PORT = process.env.PORT || '5000';
 
-export const app = express();
+const server = http
+  .createServer((req, res) => {
+    if (req.method !== 'POST') {
+      res.writeHead(Number(http.STATUS_CODES.METHOD_NOT_ALLOWED));
+      return res.end();
+    }
 
-app.post('/pdf-to-text', async (req, res) => {
-  const pdfToText = spawn('pdftotext', ['-', '-']);
-  req.pipe(pdfToText.stdin);
-  pdfToText.stdout.pipe(res);
-});
+    if (req.url === '/pdf-to-text') {
+      const pdfToText = spawn('pdftotext', ['-', '-']);
+      req.pipe(pdfToText.stdin);
+      return pdfToText.stdout.pipe(res);
+    }
 
-app.post('/pdf-to-html', async (req, res) => {
-  const tempPdfPath = path.join(__dirname, `${uuidv4()}.pdf`);
-  const tempHtmlPath = path.join(__dirname, `${uuidv4()}.html`);
-
-  const writeStream = fs.createWriteStream(tempPdfPath);
-  req.pipe(writeStream);
-
-  writeStream.on('finish', () => {
-    const pdfToHtml = spawn('pdftohtml', [
-      '-noframes',
-      tempPdfPath,
-      tempHtmlPath,
-    ]);
-
-    pdfToHtml.on('exit', () => {
-      const readStream = fs.createReadStream(tempHtmlPath);
-      readStream.pipe(res);
-
-      readStream.on('end', () => {
-        fs.unlink(tempPdfPath, (err) => {
-          if (err) console.error(`Error deleting temp PDF file: ${err}`);
-        });
-        fs.unlink(tempHtmlPath, (err) => {
-          if (err) console.error(`Error deleting temp HTML file: ${err}`);
-        });
-      });
-    });
+    if (req.url === '/pdf-to-html') {
+      const pdfToHtml = spawn('pdftohtml', ['-stdout', '-noframes', '-', '-']);
+      req.pipe(pdfToHtml.stdin);
+      return pdfToHtml.stdout.pipe(res);
+    }
+  })
+  .listen(PORT, () => {
+    console.log('start poppler server on ', PORT);
   });
-});
 
-app.listen(Number(PORT), () => {
-  console.log('start poppler server on ', PORT);
+process.on('exit', () => {
+  server.close();
 });

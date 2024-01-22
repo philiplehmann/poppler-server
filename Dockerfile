@@ -1,11 +1,20 @@
-FROM node:lts-bookworm
+FROM node:lts-bookworm as builder
 
-COPY index.ts package.json yarn.lock tsconfig.json ./
+WORKDIR /app
+
+COPY index.ts package.json yarn.lock tsconfig.json .yarnrc.yml  ./
+COPY .yarn/releases/ /app/.yarn/releases
+
+RUN yarn install; \
+    yarn build;
+
+FROM node:lts-bookworm-slim as runner
+
+WORKDIR /app
+
+COPY --from=builder /app/index.mjs ./
 
 RUN apt-get update; \
-    apt-get install poppler-utils=22.12.0-2+b1 -y; \
-    yarn install; \
-    yarn tsc; \
-    rm -rf .yarn index.ts
+    apt-get install --no-install-recommends poppler-utils=22.12.0-2+b1 -y;
 
-CMD ["node", "index.js"]
+CMD ["node", "/app/index.mjs"]

@@ -1,36 +1,57 @@
-import request from 'supertest';
-import fs from 'fs';
-import path from 'path';
-import { app } from './index';
+import { GenericContainer, StartedTestContainer } from 'testcontainers';
+import path from 'node:path';
+import { request } from './test/request';
+
+const containerPort = 3000;
+
+jest.setTimeout(60_000);
 
 describe('POST /pdf-to-html', () => {
-  it('should convert PDF to HTML and include "Dummy PDF file"', async () => {
-    const pdfPath = path.join(__dirname, 'dummy.pdf');
+  let container: StartedTestContainer;
+  let port: number;
 
-    const response = await request(app)
-      .post('/pdf-to-html')
-      .attach('file', fs.readFileSync(pdfPath), {
-        filename: 'dummy.pdf',
-        contentType: 'application/pdf',
-      });
+  beforeAll(async () => {
+    container = await new GenericContainer('philiplehmann/poppler-server:latest')
+      .withEnvironment({ PORT: String(containerPort) })
+      .withExposedPorts(containerPort)
+      .start();
 
-    expect(response.status).toBe(200);
-    expect(response.text).toContain('Dummy PDF file');
-    expect(response.text.toLowerCase()).toContain('<!doctype html>');
+    port = container.getMappedPort(containerPort);
+  });
+
+  afterAll(async () => {
+    await container.stop();
   });
 
   it('should convert PDF to text', async () => {
-    const pdfPath = path.join(__dirname, 'dummy.pdf');
+    const file = path.resolve('dummy.pdf');
+    const [response, text] = await request({
+      method: 'POST',
+      host: 'localhost',
+      port,
+      path: '/pdf-to-text',
+      headers: { 'Content-Type': 'application/pdf' },
+      file,
+    });
 
-    const response = await request(app)
-      .post('/pdf-to-text')
-      .attach('file', fs.readFileSync(pdfPath), {
-        filename: 'dummy.pdf',
-        contentType: 'application/pdf',
-      });
+    expect(response.statusCode).toBe(200);
+    expect(text).toContain('Dummy PDF file');
+  });
 
-    expect(response.status).toBe(200);
-    console.log(response.text);
-    expect(response.text).toContain('Dummy PDF file');
+  it('should convert PDF to HTML and include "Dummy PDF file"', async () => {
+    // await new Promise(() => {});
+    const file = path.resolve('dummy.pdf');
+    const [response, text] = await request({
+      method: 'POST',
+      host: 'localhost',
+      port,
+      path: '/pdf-to-html',
+      headers: { 'content-type': 'application/x-www-form-urlencoded' },
+      file,
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(text).toContain('Dummy PDF file');
+    expect(text.toLowerCase()).toContain('<!doctype html>');
   });
 });
