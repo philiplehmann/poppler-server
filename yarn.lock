@@ -956,8 +956,8 @@ __metadata:
   linkType: hard
 
 "@swc/cli@npm:^0.3.0":
-  version: 0.3.2
-  resolution: "@swc/cli@npm:0.3.2"
+  version: 0.3.5
+  resolution: "@swc/cli@npm:0.3.5"
   dependencies:
     "@mole-inc/bin-wrapper": "npm:^8.0.1"
     commander: "npm:^7.1.0"
@@ -977,7 +977,7 @@ __metadata:
     spack: bin/spack.js
     swc: bin/swc.js
     swcx: bin/swcx.js
-  checksum: 01b2b560d05ea750c2983aacf16bb968d99d8e9dd3de7ed3ce279b7eaad32b1ddfdac283b3d5cb44a1ec33f0226143ad3ec7cb9fa21ca2ec820f9f6570b5d378
+  checksum: af4355209e3c8abe1c32df30ce41325ed4fb725cfc73c36ce78fb915c5656374dfad255e991b0997f1ffc882da03370372f8b2310bba063f04e88e302f0593b8
   languageName: node
   linkType: hard
 
